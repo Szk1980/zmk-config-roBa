@@ -1,21 +1,23 @@
-default_layer {
-    bindings = < …省略… >;
-    sensor-bindings = <&inc_dec_kp &kp PAGE_UP &kp PAGE_DOWN>;
-};
+#include "roBa.dtsi"
 
-ARROW {
-    bindings = < …省略… >;
-    sensor-bindings = <&inc_dec_kp &kp LC(PAGE_UP) &kp LC(PAGE_DOWN)>;
-};
+ / {
+    /* 左は物理レイアウト明示＋ポインタ無し */
+    chosen {
+        zmk,physical-layout = &default_transform;
+        zmk,pointing-device = &none;
+    };
 
-MOUSE { bindings = < …省略… >; };
-SCROLL { bindings = < …省略… >; };
-
-/* エンコーダ（左ノブ） */
-encoders {
-    left_encoder_binding {
-        device = <&encoder_left>;
-        bindings = <&inc_dec_kp &kp PAGE_UP &kp PAGE_DOWN>;
-        // press-binding = <&kp MUTE>;
+    /* 左エンコーダ（ピンは仮。後で実配線に） */
+    encoder_left: encoder_left {
+        compatible = "zmk,encoder";
+        label = "LEFT_ENCODER";
+        a-gpios = <&gpio0 28 GPIO_ACTIVE_LOW>;
+        b-gpios = <&gpio0 29 GPIO_ACTIVE_LOW>;
+        resolution = <4>;
+        status = "okay";
     };
 };
+
+/* 右のポインタ用バスが左に来ないよう保険 */
+&i2c1 { status = "disabled"; };
+&spi1 { status = "disabled"; };
