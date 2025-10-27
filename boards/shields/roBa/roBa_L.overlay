@@ -1,6 +1,18 @@
 / {
+    /* 左はポインタなしを明示 */
     chosen { zmk,pointing-device = &none; };
+
+    /* 左のエンコーダ（CKW12=EC11相当）。GPIOピンは実配線に合わせて要更新 */
+    encoder_left: encoder_left {
+        compatible = "zmk,encoder";
+        label = "LEFT_ENCODER";
+        a-gpios = <&gpio0 /*P0.xx*/ GPIO_ACTIVE_LOW>;
+        b-gpios = <&gpio0 /*P0.yy*/ GPIO_ACTIVE_LOW>;
+        resolution = <4>;          /* 段数に合わせて調整 */
+        status = "okay";
+    };
 };
-/* 右用ポインタで使う I2C/SPI を左に誤って生やしているなら無効化 */
+
+/* 右用のI2C/SPIデバイスが左側に“誤って”現れないように保険 */
 &i2c1 { status = "disabled"; };
 &spi1 { status = "disabled"; };
