@@ -1,15 +1,23 @@
-/ {
-  chosen { zmk,pointing-device = &none; };
+#include "roBa.dtsi"
 
-  encoder_left: encoder_left {
-    compatible = "zmk,encoder";
-    label = "LEFT_ENCODER";
-    a-gpios = <&gpio0 28 GPIO_ACTIVE_LOW>;
-    b-gpios = <&gpio0 29 GPIO_ACTIVE_LOW>;
-    resolution = <4>;
-    status = "okay";
-  };
+/* 左はポインタ無し＋物理レイアウトも明示 */
+ / {
+    chosen {
+        zmk,physical-layout = &default_transform;
+        zmk,pointing-device = &none;
+    };
+
+    /* 左のエンコーダ（ピンは仮。実配線に合わせてOK） */
+    encoder_left: encoder_left {
+        compatible = "zmk,encoder";
+        label = "LEFT_ENCODER";
+        a-gpios = <&gpio0 28 GPIO_ACTIVE_LOW>;
+        b-gpios = <&gpio0 29 GPIO_ACTIVE_LOW>;
+        resolution = <4>;
+        status = "okay";
+    };
 };
 
+/* 右用デバイスが左に出てこないよう保険（左ビルドでのみ効く） */
+&spi0 { status = "disabled"; };
 &i2c1 { status = "disabled"; };
-&spi1 { status = "disabled"; };
