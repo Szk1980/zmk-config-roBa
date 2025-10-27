@@ -1,8 +1,12 @@
-#include "roBa.dtsi"
-
-&left_encoder {
-    status = "okay";
-    a-gpios = <&xiao_d 5 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-    b-gpios = <&xiao_d 0 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-    steps = <12>;
+/ {
+    /* 左にはポインタを持たせない */
+    chosen {
+        zmk,pointing-device = &none;
+    };
 };
+
+/* 右用ポインタで使っているバスが L に来ていたら無効化 */
+&spi1 { status = "disabled"; };
+&i2c1 { status = "disabled"; };
+
+/* すでに encoder ノードがあるなら残す。無ければ別途 pins 設定が必要（CKW12のA/B/押下のGPIO） */
