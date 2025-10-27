@@ -1,7 +1,16 @@
-/* 左エンコーダのA/Bピンを明示して上書きする */
+#include "roBa.dtsi"
+
+&kscan0 {
+        col-gpios
+            = <&xiao_d 10 GPIO_ACTIVE_HIGH>
+            , <&xiao_d 9 GPIO_ACTIVE_HIGH> 
+            , <&xiao_d 8 GPIO_ACTIVE_HIGH> 
+            , <&xiao_d 7 GPIO_ACTIVE_HIGH> 
+            , <&gpio0 10 GPIO_ACTIVE_HIGH>
+            , <&gpio0 9 GPIO_ACTIVE_HIGH>
+            ;
+};
+
 &left_encoder {
     status = "okay";
-    /* ここにあなたの環境の a/b を入れる。まずは「a↔b を反転」して試す */
-    a-gpios = <&xiao_d B_PIN GPIO_ACTIVE_HIGH>;  /* ← 今の b の値 */
-    b-gpios = <&xiao_d A_PIN GPIO_ACTIVE_HIGH>;  /* ← 今の a の値 */
-}
+};
