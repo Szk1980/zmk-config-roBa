@@ -25,7 +25,7 @@
             low-power-enable;
         };
     };
-}
+};
 
 /* 未使用なら無効 */
 &xiao_serial { status = "disabled"; };
