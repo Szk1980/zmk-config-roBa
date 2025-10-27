@@ -1,18 +1,15 @@
 / {
-    /* 左はポインタなしを明示（必須） */
-    chosen { zmk,pointing-device = &none; };
+  chosen { zmk,pointing-device = &none; };
 
-    // エンコーダ（ピンは仮。後で実配線に合わせて）
-    encoder_left: encoder_left {
-        compatible = "zmk,encoder";
-        label = "LEFT_ENCODER";
-        a-gpios = <&gpio0 28 GPIO_ACTIVE_LOW>;
-        b-gpios = <&gpio0 29 GPIO_ACTIVE_LOW>;
-        resolution = <4>;
-        status = "okay";
-    };
+  encoder_left: encoder_left {
+    compatible = "zmk,encoder";
+    label = "LEFT_ENCODER";
+    a-gpios = <&gpio0 28 GPIO_ACTIVE_LOW>;
+    b-gpios = <&gpio0 29 GPIO_ACTIVE_LOW>;
+    resolution = <4>;
+    status = "okay";
+  };
 };
 
-/* 右用のI2C/SPIが左に来ないよう保険 */
 &i2c1 { status = "disabled"; };
 &spi1 { status = "disabled"; };
