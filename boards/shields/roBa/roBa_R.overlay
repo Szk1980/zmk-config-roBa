@@ -1,6 +1,6 @@
 #include "roBa.dtsi"
 
-/* 右はポインタ有効（実体は &trackball = PMW3610） */
+/* 右は物理レイアウト＋ポインタ有効（PMW3610 = &trackball） */
  / {
     chosen {
         zmk,physical-layout = &default_transform;
@@ -8,16 +8,15 @@
     };
 };
 
-/* XIAO BLE の SPI0 ピン設定（数値だけ。実配線に合わせてOK） */
+/* ---------- SPI0 のピン割当（<>の中は数値だけ！） ---------- */
 &pinctrl {
     spi0_default: spi0_default {
         group1 {
             psels = <NRF_PSEL(SPIM_SCK,  0, 5)>,
                     <NRF_PSEL(SPIM_MOSI, 0, 4)>,
-                    <NRF_PSEL(SPIM_MISO, 0, 29)>;   /* ← MISOの実ピンに合わせる */
+                    <NRF_PSEL(SPIM_MISO, 0, 29)>;   /* ← 29 は仮。実ピンに置換 */
         };
     };
-
     spi0_sleep: spi0_sleep {
         group1 {
             psels = <NRF_PSEL(SPIM_SCK,  0, 5)>,
@@ -26,29 +25,32 @@
             low-power-enable;
         };
     };
-};
+}
 
+/* 未使用なら無効 */
 &xiao_serial { status = "disabled"; };
 
+/* ---------- PMW3610 本体（CS/IRQ も数値のみ） ---------- */
 &spi0 {
     status = "okay";
     compatible = "nordic,nrf-spim";
     pinctrl-0 = <&spi0_default>;
     pinctrl-1 = <&spi0_sleep>;
     pinctrl-names = "default", "sleep";
-    cs-gpios = <&gpio0 9 GPIO_ACTIVE_LOW>;      /* ← CS の実ピン */
+    cs-gpios = <&gpio0 9 GPIO_ACTIVE_LOW>;   /* ← 9 は仮。実ピンに */
+
     trackball: trackball@0 {
         status = "okay";
         compatible = "pixart,pmw3610";
         reg = <0>;
         spi-max-frequency = <2000000>;
-        irq-gpios = <&gpio0 2 GPIO_ACTIVE_LOW>;  /* ← IRQ の実ピン */
+        irq-gpios = <&gpio0 2 GPIO_ACTIVE_LOW>;  /* ← 2 は仮。実ピンに */
         label = "PMW3610";
         cpi = <1200>;
     };
 };
 
-/* 右ビルド時に keymap の &encoder_left 参照で落ちないようダミーを用意 */
+/* 右ビルドで keymap の &encoder_left を満たす“ダミー”（無効化） */
  / {
     encoder_left: encoder_left {
         compatible = "zmk,encoder";
