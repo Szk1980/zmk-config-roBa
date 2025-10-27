@@ -1,7 +1,8 @@
 / {
+    /* 左はポインタなしを明示（必須） */
     chosen { zmk,pointing-device = &none; };
 
-    // エンコーダ（ピンは仮。ビルド通し用の保険）
+    // エンコーダ（ピンは仮。後で実配線に合わせて）
     encoder_left: encoder_left {
         compatible = "zmk,encoder";
         label = "LEFT_ENCODER";
@@ -12,6 +13,6 @@
     };
 };
 
-// 右のポインタ用バスが左に来ないよう保険
+/* 右用のI2C/SPIが左に来ないよう保険 */
 &i2c1 { status = "disabled"; };
 &spi1 { status = "disabled"; };
