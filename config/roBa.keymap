@@ -8,8 +8,7 @@
     quick-tap-ms = <0>;
 };
 
-
-/ {
+ / {
     combos {
         compatible = "zmk,combos";
 
@@ -53,7 +52,6 @@
             compatible = "zmk,behavior-hold-tap";
             label = "LAYER_TAP_TO_0";
             bindings = <&mo>, <&to_layer_0>;
-
             #binding-cells = <2>;
             tapping-term-ms = <200>;
         };
@@ -70,7 +68,8 @@
 &kp LCTRL         &kp LEFT_WIN  &kp LEFT_ALT  &lt_to_layer_0 6 INT_HENKAN  &lt 2 SPACE  &lt_to_layer_0 3 INT_MUHENKAN      &kp BACKSPACE  &lt 1 ENTER                             &kp DEL
             >;
 
-            sensor-bindings = <&inc_dec_kp PG_UP PAGE_DOWN>;
+            /* 回転：通常は PageUp/Down */
+            sensor-bindings = <&inc_dec_kp &kp PAGE_UP &kp PAGE_DOWN>;
         };
 
         FUNCTION {
@@ -99,7 +98,8 @@
 &trans          &trans                  &trans          &trans                   &trans   &trans      &trans  &trans                          &trans
             >;
 
-            sensor-bindings = <&inc_dec_kp LC(PAGE_UP) LC(PAGE_DOWN)>;
+            /* 回転：Ctrl+PageUp/Down（例） */
+            sensor-bindings = <&inc_dec_kp &kp LC(PAGE_UP) &kp LC(PAGE_DOWN)>;
         };
 
         MOUSE {
@@ -128,5 +128,16 @@
 &trans  &trans        &trans        &trans        &trans  &trans      &trans       &trans                                                  &bt BT_CLR_ALL
             >;
         };
+
+        /* ここから追加：エンコーダ（左ノブ）のデバイス紐付け */
+        encoders {
+            left_encoder_binding {
+                device = <&encoder_left>;
+                /* 既定：PageUp/Down。各レイヤの sensor-bindings があればそちらが優先される */
+                bindings = <&inc_dec_kp &kp PAGE_UP &kp PAGE_DOWN>;
+                // 押し込みがエンコーダ配線なら↓を有効化（好みで変更）
+                // press-binding = <&kp MUTE>;
+            };
+        }
     };
 };
