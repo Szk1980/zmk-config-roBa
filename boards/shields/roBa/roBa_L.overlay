@@ -18,6 +18,15 @@
     };
 };
 
+/* ★ col-gpios を与える（必須）。ピン番号は後で実配線に合わせてOK */
+&kscan0 {
+    col-gpios = <&xiao_d 10 GPIO_ACTIVE_HIGH>,
+                <&xiao_d 9  GPIO_ACTIVE_HIGH>,
+                <&xiao_d 8  GPIO_ACTIVE_HIGH>,
+                <&xiao_d 7  GPIO_ACTIVE_HIGH>,
+                <&gpio0  10 GPIO_ACTIVE_HIGH>;
+};
+
 /* 右のポインタ用バスが左に来ないよう保険 */
 &i2c1 { status = "disabled"; };
 &spi1 { status = "disabled"; };
